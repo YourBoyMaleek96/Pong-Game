@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>PONG Game</title>
+</head>
+
+<body>
+      <!-- Home screen setup -->
+    <div id="menu">
+        <label for="mode">Choose mode:</label>
+        <select id="mode" name="mode">
+            <option value="single">Computer</option>
+            <option value="multi">Player</option>
+        </select>
+        <button onclick="controller.startGame()">Start Game</button>
+    </div>
+
+    <canvas id="pongCanvas" width="600" height="400" style="display:none;"></canvas>
+   
+    <!-- Define Audio for wave file  -->
+    <audio id="StartSound" src="pongstart.wav"></audio>
+    <audio id="HitWallSound" src="pongwall.wav"></audio>
+    <audio id="PaddleSound" src="pongpaddle.wav"></audio>
+    <audio id="PointSound" src="pongpoint.wav"></audio>
+    
+    <script src="script.js"></script>
+</body>
+
+</html>
