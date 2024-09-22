@@ -12,11 +12,11 @@
 
 
 /**
- * Model for game of Pong
+ * Model for the game of Pong
  * The  model shows the stat e of the Pong Game.
  * It sets the position and speed of the paddles and the ball.
  * It also defines the score of the game.
- *              T
+ *              
  */
 
 const model = {
@@ -24,9 +24,9 @@ const model = {
     ctx: null,
     // defines Paddle and ball speed 
     paddleSpeed: 3,
-    ballSpeed: 2,
+    ballSpeed: 1,
     // Winning score 
-    winningScore: 5,
+    winningScore: 11,
     //defines Paddle position and velocity 
     leftPaddleY: 160,
     rightPaddleY: 160,
@@ -37,11 +37,16 @@ const model = {
     ballY: 200,
     ballXSpeed: 3,
     ballYSpeed: 3,
+    // Intialize score to 0
     leftPlayerScore: 0,
     rightPlayerScore: 0,
     player2IsComputer: false,
     gameStarted: false,
-
+    //Define paddle and ball image 
+    ballImage: new Image(),
+    leftPaddleImage: new Image(),
+    rightPaddleImage: new Image(),
+    //function to rest game
     resetGameState() 
     {
         this.leftPaddleY = 160;
@@ -54,13 +59,25 @@ const model = {
     }
 };
 
-// === View ===
-const view = {
-    init(ctx) {
+
+
+/**
+ *  View for the Game of Pong.
+ * The view is responsible for thge visual
+ * representation of the game. In the view
+ * the paddles, ball, and score is drawn on
+ * the canvas.          
+ */
+
+const view = { 
+    init(ctx) 
+    {
         model.ctx = ctx;
     },
 
-    drawGame() {
+    // method to update the canvas with th ecurrent state of the game 
+    drawGame() 
+    {
         const ctx = model.ctx;
 
         // Clear the canvas
@@ -83,7 +100,8 @@ const view = {
         ctx.fillText(model.leftPlayerScore + ' - ' + model.rightPlayerScore, model.canvas.width / 2 - 30, 30);
     },
 
-    displayMenu(show) {
+    displayMenu(show) 
+     {
         document.getElementById('menu').style.display = show ? 'block' : 'none';
         model.canvas.style.display = show ? 'none' : 'block';
     },
@@ -92,6 +110,7 @@ const view = {
         alert(winner + " wins!");
     }
 };
+
 
 /**
  * Sets up the sounds used for starting the game,
@@ -105,15 +124,23 @@ const sounds = {
 };
 
 
-// === Controller ===
+/**
+ *  Controller for the Game of Pong.
+ * The controller  is responsible for updating
+ * the game state such as ball movement, paddle movement
+ * and collision with wall.
+ *           
+ */
 const controller = {
-    startGame() {
+   
+    //method to start the game
+    startGame() 
+    {
         console.log("Start Game called");
-        if (sounds.start) {
+        if (sounds.start) 
+        {
             sounds.start.play(); // Play the start game sound 
-        } else {
-            console.error("Start sound not found");
-        }
+        } 
         const modeSelect = document.getElementById('mode');
         model.player2IsComputer = modeSelect.value === 'single';
         model.gameStarted = true;
@@ -126,7 +153,9 @@ const controller = {
         controller.gameLoop();
     },
     
-    gameLoop() {
+    // main loop for the game and continuously update the game 
+    gameLoop() 
+    {
         if (model.gameStarted) 
         {
             controller.updateGame();
@@ -135,6 +164,7 @@ const controller = {
         }
     },
 
+    // method that updates position of paddles, moves the ball, check for collision, and if some one scores.
     updateGame() 
     {
         // Update left paddle (player 1)
@@ -176,6 +206,7 @@ const controller = {
         controller.checkWin();
     },
 
+    // method to check if ball collides with paddle and if a point is scored 
     checkPaddleCollision() 
     {
         // Check if the ball passed the left paddle
@@ -217,7 +248,8 @@ const controller = {
         if (model.rightPaddleY < 0) model.rightPaddleY = 0;
         if (model.rightPaddleY > model.canvas.height - 80) model.rightPaddleY = model.canvas.height - 80;
     },
-
+    
+    //Method to check if winning score is reached 
     checkWin() 
     {
         if (model.leftPlayerScore === model.winningScore || model.rightPlayerScore === model.winningScore) 
@@ -228,7 +260,7 @@ const controller = {
         }
     },
 
-    // hadles keybord inputs 
+    // method to detects when keys are pressed to move the paddles
     handleKeyPress(event) 
     {
         if (model.gameStarted) 
@@ -252,6 +284,7 @@ const controller = {
         }
     },
 
+    // method to stop paddles when keys are released
     handleKeyRelease(event) 
     {
         if (model.gameStarted) 
